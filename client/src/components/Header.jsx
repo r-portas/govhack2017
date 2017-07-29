@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
 import MenuItem from 'material-ui/MenuItem';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
@@ -28,7 +27,7 @@ class Header extends Component {
 
     render() {
         return (
-            <div>
+            <div id="app-header">
                 <Drawer 
                     docked={false}
                     open={this.state.open}

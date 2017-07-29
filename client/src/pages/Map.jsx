@@ -3,6 +3,7 @@ import MapGL from 'react-map-gl';
 import DeckGLOverlay from './../deckgl-overlay.js';
 import Footer from './../components/Footer'
 import {csv as requestCsv} from 'd3-request';
+import * as $ from 'jquery';
 
 // const DATA_URL = 'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv';  // eslint-disable-line
 const DATA_URL = 'https://raw.githubusercontent.com/r-portas/govhack2017/master/crash_locations.csv';  // eslint-disable-line
@@ -29,7 +30,6 @@ class Map extends Component {
                 this.setState({data});
             }
         });
-
     }
 
     componentDidMount() {
@@ -70,7 +70,7 @@ class Map extends Component {
     _resize() {
         this._onViewportChange({
             width: window.innerWidth,
-            height: window.innerHeight
+            height: window.innerHeight - $('#app-header').height()
         });
     }
 
