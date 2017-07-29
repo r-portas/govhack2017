@@ -30,7 +30,7 @@ class App extends Component {
                         <Route exact path="/" component={Home} />
                         <Route path="/test" component={Test} />
                         <Route path="/map" component={Map} />
-                        <Footer />
+                        
                     </div>
                 </MuiThemeProvider>
             </Router>
