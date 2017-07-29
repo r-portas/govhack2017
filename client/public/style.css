@@ -1,0 +1,12 @@
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 2;
+  background: darkgrey;
+  display: flex;
+}
+
+.btn-footer {
+    flex-grow: 1;
+}

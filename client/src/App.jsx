@@ -7,6 +7,7 @@ import {
 } from 'material-ui/styles/colors';
 
 import Header from './components/Header';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Test from './pages/Test';
 import Map from './pages/Map';
@@ -29,6 +30,7 @@ class App extends Component {
                         <Route exact path="/" component={Home} />
                         <Route path="/test" component={Test} />
                         <Route path="/map" component={Map} />
+                        <Footer />
                     </div>
                 </MuiThemeProvider>
             </Router>
