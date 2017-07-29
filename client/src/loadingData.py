@@ -5,6 +5,7 @@ class DataType(object):
     def __init__(self):
         self._total_info = []
         self._total_severity =[]
+        self._total_speed = []
 
         self.process_file()
 
@@ -22,10 +23,10 @@ class DataType(object):
     def getIncidentSeverity(self):
         return self._total_severity        
 
-class CrashLocations(DataType):
-    def __init__(self):
-        super().__init__()
-        
+    def getSpeed(self):
+        return self._total_speed
+
+class CrashLocations(DataType):      
     def process_file(self):
         """converts csv file to a list of lists.
         Each line is a single crash incident.
@@ -41,7 +42,6 @@ class CrashLocations(DataType):
         params: N/A
         returns: N/A
         """
-        
         file = open("locations.csv", 'r')
         start = True
         for line in file:
@@ -64,7 +64,6 @@ class CrashLocations(DataType):
 
             #Storing data for line
             list_line = [(float(line[8]), float(line[9])),
-                         self.convertSpeed(line[29]),
                          line[30],
                          self.convertAtmosWeather(line[31]),
                          self.convertLight(line[32])]
@@ -75,6 +74,8 @@ class CrashLocations(DataType):
             #Store to severity
             self._total_severity.append(self.convertSeverity(line[1]))
 
+            self._total_speed.append(self.convertSpeed(line[29]))
+            
         file.close()
 
     def convertRoadWeather(self, condition):
@@ -88,7 +89,6 @@ class CrashLocations(DataType):
 
         precondition:
         * must be "Dry" or "Wet"
-
         """
         if condition == "Dry":
             return 0
@@ -124,7 +124,6 @@ class CrashLocations(DataType):
 
         precondition:
         * must be "Clear" or "Raining"
-
         """
         if condition == "Daylight":
             return 0
@@ -149,10 +148,8 @@ class CrashLocations(DataType):
             Hospitalisation[3]
             Fatal[4]
             
-
         precondition:
         * must be "Clear" or "Raining"
-
         """
         if condition == "Property damage only":
             return 0
@@ -171,7 +168,7 @@ class CrashLocations(DataType):
     def convertSpeed(self, speed):
         speed = speed.split(' ')
         return int(speed[-2])
-                
+
 def main():
     x = CrashLocations()
 
