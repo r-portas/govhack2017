@@ -10,15 +10,13 @@ const HeatmapOverlay = ({data, viewport}) => {
      *   ...
      * ]
      */
-    data = [ {position: [-122.4, 37.7]} ];
     const layer = new HexagonLayer({
         id: 'hexagon-layer',
-        data: data,
         radius: 1000
     });
 
 
-    return (<DeckGL {...viewport} layers={[layer]} />);
+    return (<DeckGL {...viewport} layers={[layer]} data={data} />);
 };
 
 export default HeatmapOverlay;

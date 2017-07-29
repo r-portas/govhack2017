@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
 import MapGL from 'react-map-gl';
-<<<<<<< HEAD
-import DeckGL, { LineLayer } from 'deck.gl';
-import FlatButtonExampleIcon from '../components/Controls';
-=======
->>>>>>> e8c18f0ac04ff9ce8903281facdc1b7d9ee07d8c
 
 import HeatmapOverlay from './../components/HeatmapOverlay';
 
@@ -24,8 +19,9 @@ class Map extends Component {
                 bearing: -27.39
             },
             data: [
-                {position: [ -0.205590, 51.514910 ]}
+                {position: [ 153.021072,  -27.470125 ]}
             ]
+        
         };
 
         this.resize = this.resize.bind(this);
@@ -70,16 +66,10 @@ class Map extends Component {
                     mapStyle="mapbox://styles/mapbox/dark-v9"
                     onViewportChange={this.viewportChange}
                 >
-<<<<<<< HEAD
-                <DeckGL {...this.state.viewport} layers={[
-                    new LineLayer({id: 'line-layer', data})
-                ]} />
-=======
                     <HeatmapOverlay
                         viewport={viewport}
                         data={data || []}
                     />
->>>>>>> e8c18f0ac04ff9ce8903281facdc1b7d9ee07d8c
                 </MapGL>
             </div>
         );
