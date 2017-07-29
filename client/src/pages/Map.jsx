@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MapGL from 'react-map-gl';
 import DeckGL, { LineLayer } from 'deck.gl';
+import FlatButtonExampleIcon from '../components/Controls';
 
 const data = [
     { sourcePosition: [153.013982, -27.496976], targetPosition: [153.055129, -27.499200] }
@@ -62,9 +63,9 @@ class Map extends Component {
                     mapStyle="mapbox://styles/mapbox/dark-v9"
                     onViewportChange={this.viewportChange}
                 >
-                    <DeckGL {...this.state.viewport} layers={[
-                        new LineLayer({id: 'line-layer', data})
-                    ]} />
+                <DeckGL {...this.state.viewport} layers={[
+                    new LineLayer({id: 'line-layer', data})
+                ]} />
                 </MapGL>
             </div>
         );

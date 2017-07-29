@@ -6,7 +6,7 @@ import {
     grey900
 } from 'material-ui/styles/colors';
 
-import Header from './Header';
+import Header from './components/Header';
 import Home from './pages/Home';
 import Test from './pages/Test';
 import Map from './pages/Map';
