@@ -5,7 +5,7 @@ import DeckGLOverlay from './../deckgl-overlay.js';
 import {csv as requestCsv} from 'd3-request';
 
 // const DATA_URL = 'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv';  // eslint-disable-line
-const DATA_URL = 
+const DATA_URL = 'https://raw.githubusercontent.com/r-portas/govhack2017/master/crash_locations.csv';  // eslint-disable-line
 
 // Set your mapbox token here
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_KEY;
@@ -25,7 +25,7 @@ class Map extends Component {
 
         requestCsv(DATA_URL, (error, response) => {
             if (!error) {
-                let data = response.map(d => ([Number(d.lng), Number(d.lat)]));
+                let data = response.map(d => ([Number(d.Longitude), Number(d.Latitude)]));
                 this.setState({data});
             }
         });

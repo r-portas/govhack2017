@@ -12,18 +12,18 @@ const LIGHT_SETTINGS = {
 };
 
 const colorRange = [
-  [1, 152, 189],
-  [73, 227, 206],
-  [216, 254, 181],
-  [254, 237, 177],
-  [254, 173, 84],
-  [209, 55, 78]
+  [1, 152, 189, 50],
+  [73, 227, 206, 50],
+  [216, 254, 181, 50],
+  [254, 237, 177, 50],
+  [254, 173, 84, 50],
+  [209, 55, 78, 50]
 ];
 
-const elevationScale = {min: 1, max: 50};
+const elevationScale = {min: 1, max: 2};
 
 const defaultProps = {
-  radius: 1000,
+  radius: 20,
   upperPercentile: 100,
   coverage: 1
 };
@@ -38,7 +38,7 @@ export default class DeckGLOverlay extends Component {
     return {
       longitude: 153.021072,
       latitude: -27.470125,
-      zoom: 6.6,
+      zoom: 10,
       minZoom: 5,
       maxZoom: 15,
       pitch: 40.5,
