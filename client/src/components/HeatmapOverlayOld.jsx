@@ -85,7 +85,6 @@ class HeatmapOverlay extends Component {
                 id: 'heatmap',
                 colorRange,
                 coverage,
-                data,
                 elevationRange: [0, 3000],
                 elevationScale: this.state.elevationScale,
                 extruded: true,

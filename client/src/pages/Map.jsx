@@ -1,77 +1,69 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import MapGL from 'react-map-gl';
+import DeckGLOverlay from './../deckgl-overlay.js';
 
-import HeatmapOverlay from './../components/HeatmapOverlay';
+import {csv as requestCsv} from 'd3-request';
+
+// const DATA_URL = 'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv';  // eslint-disable-line
+const DATA_URL = 
+
+// Set your mapbox token here
+const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_KEY;
 
 class Map extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             viewport: {
+                ...DeckGLOverlay.defaultViewport,
                 width: 500,
-                height: 500,
-                longitude: 153.021072,
-                latitude: -27.470125,
-                zoom: 15,
-                pitch: 40,
-                bearing: -27.39
+                height: 500
             },
-            data: [
-                {position: [ 153.021072,  -27.470125 ]}
-            ]
-        
+            data: null
         };
 
-        this.resize = this.resize.bind(this);
-        this.viewportChange = this.viewportChange.bind(this);
+        requestCsv(DATA_URL, (error, response) => {
+            if (!error) {
+                let data = response.map(d => ([Number(d.lng), Number(d.lat)]));
+                this.setState({data});
+            }
+        });
+
     }
 
     componentDidMount() {
-        window.addEventListener('resize', this.resize); 
-        this.resize();
+        window.addEventListener('resize', this._resize.bind(this));
+        this._resize();
     }
 
-    viewportChange(viewport) {
-        const {width, height, latitude, longitude, zoom} = viewport;
-
-        const  vp = this.state.viewport;
-        vp.latitude = latitude;
-        vp.longitude = longitude;
-        vp.zoom = zoom;
-        vp.width = width;
-        vp.height = height;
-        this.setState({ viewport: vp });
+    _resize() {
+        this._onViewportChange({
+            width: window.innerWidth,
+            height: window.innerHeight
+        });
     }
 
-    resize() {
-        const viewport = this.state.viewport;
-
-        viewport.height = window.innerHeight - 64;
-        viewport.width = window.innerWidth;
-
-        this.setState({ viewport: viewport });
+    _onViewportChange(viewport) {
+        this.setState({
+            viewport: {...this.state.viewport, ...viewport}
+        });
     }
 
     render() {
-
-        const { viewport, data } = this.state;
+        const {viewport, data} = this.state;
 
         return (
-            <div>
-                <MapGL 
-                    {...viewport} 
-                    mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
-                    mapStyle="mapbox://styles/mapbox/dark-v9"
-                    onViewportChange={this.viewportChange}
-                >
-                    <HeatmapOverlay
-                        viewport={viewport}
-                        data={data || []}
-                    />
-                </MapGL>
-            </div>
+            <MapGL
+                {...viewport}
+                mapStyle="mapbox://styles/mapbox/dark-v9"
+                onViewportChange={this._onViewportChange.bind(this)}
+                mapboxApiAccessToken={MAPBOX_TOKEN}>
+                <DeckGLOverlay
+                    viewport={viewport}
+                    data={data || []}
+                />
+            </MapGL>
         );
     }
 }
