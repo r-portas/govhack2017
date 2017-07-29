@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import MapGL from 'react-map-gl';
-import DeckGL, { LineLayer } from 'deck.gl';
 
-const data = [
-    { sourcePosition: [153.013982, -27.496976], targetPosition: [153.055129, -27.499200] }
-];
+import HeatmapOverlay from './../components/HeatmapOverlay';
 
 class Map extends Component {
 
@@ -20,7 +17,10 @@ class Map extends Component {
                 zoom: 15,
                 pitch: 40,
                 bearing: -27.39
-            }
+            },
+            data: [
+                {position: [ -0.205590, 51.514910 ]}
+            ]
         };
 
         this.resize = this.resize.bind(this);
@@ -47,24 +47,28 @@ class Map extends Component {
     resize() {
         const viewport = this.state.viewport;
 
-        viewport.height = window.innerHeight;
+        viewport.height = window.innerHeight - 64;
         viewport.width = window.innerWidth;
 
         this.setState({ viewport: viewport });
     }
 
     render() {
+
+        const { viewport, data } = this.state;
+
         return (
             <div>
                 <MapGL 
-                    {...this.state.viewport} 
+                    {...viewport} 
                     mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
                     mapStyle="mapbox://styles/mapbox/dark-v9"
                     onViewportChange={this.viewportChange}
                 >
-                    <DeckGL {...this.state.viewport} layers={[
-                        new LineLayer({id: 'line-layer', data})
-                    ]} />
+                    <HeatmapOverlay
+                        viewport={viewport}
+                        data={data || []}
+                    />
                 </MapGL>
             </div>
         );
