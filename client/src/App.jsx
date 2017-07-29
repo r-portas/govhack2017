@@ -9,6 +9,7 @@ import {
 import Header from './Header';
 import Home from './pages/Home';
 import Test from './pages/Test';
+import Map from './pages/Map';
 
 const muiTheme = getMuiTheme({
     palette: {
@@ -27,6 +28,7 @@ class App extends Component {
 
                         <Route exact path="/" component={Home} />
                         <Route path="/test" component={Test} />
+                        <Route path="/map" component={Map} />
                     </div>
                 </MuiThemeProvider>
             </Router>

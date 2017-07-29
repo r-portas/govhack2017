@@ -36,6 +36,7 @@ class Header extends Component {
                 >
                     <MenuItem containerElement={<Link to="/" />} onTouchTap={this.handleClose}>Home</MenuItem>
                     <MenuItem containerElement={<Link to="/test" />} onTouchTap={this.handleClose}>Test</MenuItem>
+                    <MenuItem containerElement={<Link to="/map" />} onTouchTap={this.handleClose}>Map</MenuItem>
                 </Drawer> 
                 <AppBar onLeftIconButtonTouchTap={this.handleToggle} title="GovHack2017"/>
             </div>
