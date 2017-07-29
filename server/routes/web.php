@@ -12,11 +12,20 @@
 */
 
 $app->get('/', function () use ($app) {
-    return $app->version();
+    return DB::select("SELECT * FROM test");
+});
+
+$app->get('/test', function(){
+	return view('login');
 });
 
 //Sign up user
-$app->post('user', function(){
+$app->post('user/register', function(){
+	//
+});
+
+//Login up user
+$app->post('user/login', function(){
 	//
 });
 
