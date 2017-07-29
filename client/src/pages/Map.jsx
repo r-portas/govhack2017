@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import MapGL from 'react-map-gl';
 import DeckGLOverlay from './../deckgl-overlay.js';
-
+import Footer from './../components/Footer'
 import {csv as requestCsv} from 'd3-request';
 
 // const DATA_URL = 'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv';  // eslint-disable-line
@@ -54,16 +54,19 @@ class Map extends Component {
         const {viewport, data} = this.state;
 
         return (
-            <MapGL
-                {...viewport}
-                mapStyle="mapbox://styles/mapbox/dark-v9"
-                onViewportChange={this._onViewportChange.bind(this)}
-                mapboxApiAccessToken={MAPBOX_TOKEN}>
-                <DeckGLOverlay
-                    viewport={viewport}
-                    data={data || []}
-                />
-            </MapGL>
+            <div>
+                <MapGL
+                    {...viewport}
+                    mapStyle="mapbox://styles/mapbox/dark-v9"
+                    onViewportChange={this._onViewportChange.bind(this)}
+                    mapboxApiAccessToken={MAPBOX_TOKEN}>
+                    <DeckGLOverlay
+                        viewport={viewport}
+                        data={data || []}
+                    />
+                </MapGL>
+                <Footer />
+            </div>
         );
     }
 }
