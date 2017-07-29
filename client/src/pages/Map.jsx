@@ -35,6 +35,36 @@ class Map extends Component {
     componentDidMount() {
         window.addEventListener('resize', this._resize.bind(this));
         this._resize();
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                setTimeout(() => {
+                    const newView = {
+                        longitude: position.coords.longitude,
+                        latitude: position.coords.latitude,
+                        zoom: 15,
+                        pitch: 58,
+                        bearing: 14
+                    };
+
+                    this.setState({
+                        viewport: {
+                            ...this.state.viewport,
+                            ...newView
+                        }
+                    });
+                    this._resize();
+                }, 1500);
+            }, () => {
+                console.log(`Browser supports GeoLocation.`);
+                
+            });
+        } else {
+            // TODO
+            // Browser doesn't support Geolocation
+            console.log(`Browser doesn't support GeoLocation.`);
+        }
     }
 
     _resize() {
@@ -52,7 +82,7 @@ class Map extends Component {
 
     render() {
         const {viewport, data} = this.state;
-
+   
         return (
             <div>
                 <MapGL
