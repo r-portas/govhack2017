@@ -5,6 +5,7 @@ import HelpIcon from 'material-ui/svg-icons/alert/error-outline';
 import {fullWhite} from 'material-ui/styles/colors';
 // import { Grid, Row, Col } from 'react-flexbox-grid';
 import * as $ from 'jquery';
+import { Link } from 'react-router-dom';
 
 const style = {
   margin: 12
@@ -23,6 +24,7 @@ export default class Footer extends Component {
                 style={style}
                 primary={true}
                 label="Help Me!"
+                containerElement={<Link to="/help" />}
             />
         </div>;
     }

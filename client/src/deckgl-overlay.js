@@ -23,7 +23,7 @@ const colorRange = [
 const elevationScale = {min: 1, max: 2};
 
 const defaultProps = {
-    radius: 100,
+    radius: 20,
     upperPercentile: 100,
     coverage: 0.75
 };

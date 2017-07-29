@@ -34,8 +34,10 @@ class Header extends Component {
                     onRequestChange={(open) => this.setState({open})}
                 >
                     <MenuItem containerElement={<Link to="/" />} onTouchTap={this.handleClose}>Home</MenuItem>
-                    <MenuItem containerElement={<Link to="/test" />} onTouchTap={this.handleClose}>Test</MenuItem>
-                    <MenuItem containerElement={<Link to="/map" />} onTouchTap={this.handleClose}>Map</MenuItem>
+                    <MenuItem containerElement={<Link to="/help" />} onTouchTap={this.handleClose}>Help</MenuItem>
+                    <MenuItem containerElement={<Link to="/" />} onTouchTap={this.handleClose}>My Account</MenuItem>
+                    <MenuItem containerElement={<Link to="/" />} onTouchTap={this.handleClose}>Incidents</MenuItem>
+                    <MenuItem containerElement={<Link to="/" />} onTouchTap={this.handleClose}>Incidents</MenuItem>
                 </Drawer> 
                 <AppBar onLeftIconButtonTouchTap={this.handleToggle} title="DriveSafely"/>
             </div>

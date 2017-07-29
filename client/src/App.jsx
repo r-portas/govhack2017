@@ -7,9 +7,8 @@ import {
 } from 'material-ui/styles/colors';
 
 import Header from './components/Header';
-import Home from './pages/Home';
-import Test from './pages/Test';
 import Map from './pages/Map';
+import Help from './pages/Help';
 
 const muiTheme = getMuiTheme({
     palette: {
@@ -26,9 +25,8 @@ class App extends Component {
                     <div>
                         <Header />
 
-                        <Route exact path="/" component={Home} />
-                        <Route path="/test" component={Test} />
-                        <Route path="/map" component={Map} />
+                        <Route exact path="/" component={Map} />
+                        <Route path="/help" component={Help} />
                         
                     </div>
                 </MuiThemeProvider>
