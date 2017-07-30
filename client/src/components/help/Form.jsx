@@ -28,13 +28,14 @@ const style = {
 class Injuries extends Component {
     render() {
         return <div className="help-card"> 
-            <Card>
+            <Card className="help-card-container">
                 <CardText>  
                      <h2 className="help-h2"> Is anyone injured? </h2> 
                 </CardText>
 
-                <CardActions>
-                    <RaisedButton primary={true} label="Next"/>
+                <CardActions className="help-card-actions">
+                    <RaisedButton primary={true} href="tel:000" label="Yes"/>
+                    <RaisedButton primary={true} label="No"/>
                 </CardActions>
             </Card>
             <div className="footer">
@@ -74,7 +75,7 @@ export default class Form extends Component {
     componentDidMount() {
         $(window).resize();
     }
-    
+
     handleChange = (value) => {
         this.setState({
             slideIndex: value,
