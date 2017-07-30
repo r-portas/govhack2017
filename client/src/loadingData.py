@@ -185,21 +185,31 @@ class CrashLocations(DataType):
 
 class InputCrashLocation(DataType):
     def __init__(self):
-        self._total_info =[]
+        self._total_info = []
+        self._weather_info = []
 
         self.addData(-27.47, 153.03)
 
+    def getWeatherInfo(self):
+        return self._weather_info
+    
+    def getTotalInfo(self):
+        return self._total_info
 
-    def addData(self, lat, lon):
+    def addData(self, lon, lat):
         response = requests.get("http://api.openweathermap.org/data/2.5/weather?lat="+str(lat)+"&lon="+str(lon)+"&appid=8617122af42ff01a0f0a2bab082b3e2f")
         data = response.json()
 
-        inputData = [lat,
-                     lon,
+        inputData = [lon,
+                     lat,
                      self.convertAtmosWeather(data['weather'][0]['main']),#clear/raining
                      self.convertTimeToDawnDusk(data['sys']['sunrise'],data['sys']['sunset'])]
 
+        weatherData = [self.convertAtmosWeather(data['weather'][0]['main']),#clear/raining
+                       self.convertTimeToDawnDusk(data['sys']['sunrise'],data['sys']['sunset'])]
+
         self._total_info.append(inputData)
+        self._weather_info.append(weatherData)
 
         print(data)  
 
@@ -214,55 +224,76 @@ class InputCrashLocation(DataType):
         elif current.time() >= sunset.time() or current.time() <= sunrise.time():
             return 2
         return 0 
-
+    
+class MachineLearning(object):
+    def __init__(self):
+        self._predicted_classes = []
+        self._class_names = ['low', 'medium', 'high', 'very high']
+        self._feature_names_full = ['longitude', 'latitude', 'atmosphere weather', 'light']
+        self._feature_names_weather = ['atmosphere weather', 'light']
+        self._clf = None
+        
+    def initTreeFull(self):
+        """VERSION WITH LONG/LAT AND WEATHER CONDITIONS"""
+        # initialise variables for input into ML
+        loc = CrashLocations()
+        locData = loc.getIncidentInfo()
+        locTargets = loc.getIncidentSeverity()
+        
+        # convert lists into numerical arrays
+        locDataArray = np.asarray(locData)
+        locTargetArray = np.asarray(locTargets)
+        
+        # create decision tree
+        self._clf = tree.DecisionTreeClassifier() # max_depth
+        self._clf = self._clf.fit(locDataArray, locTargetArray)
+        
+        # export decision tree
+        tree.export_graphviz(self._clf, out_file='tree.dot',
+                                    feature_names=self._feature_names_full,
+                                    class_names=self._class_names,
+                                    filled=True, rounded=True,
+                                    special_characters=True)
+        
+    def initTreeWeather(self):
+        """VERSION WITH WEATHER CONDITIONS ONLY"""
+        # initialise variables for input into ML
+        loc = CrashLocations()
+        locData = loc.getIncidentWeatherInfo()
+        locTargets = loc.getIncidentSeverity()
+        
+        # convert lists into numerical arrays
+        locDataArray = np.asarray(locData)
+        locTargetArray = np.asarray(locTargets)
+        
+        # create decision tree
+        self._clf = tree.DecisionTreeClassifier() # max_depth
+        self._clf = self._clf.fit(locDataArray, locTargetArray)
+        
+        """ FOR DEBUGGING
+        # export decision tree
+        tree.export_graphviz(self._clf, out_file='tree.dot',
+                                    feature_names=self._feature_names_weather,
+                                    class_names=self._class_names,
+                                    filled=True, rounded=True,
+                                    special_characters=True)   
+        """
+        
+    def predictDanger(self, predictInput):
+        return self._clf.predict(predictInput)
+        
 def main():
-    """ VERSION WITH LONG/LAT AND WEATHER CONDITIONS
-    # initialise variables for input into ML
-    classNames = ['low', 'medium', 'high', 'very high']
-    featureNames = ['longitude', 'latitude', 'atmosphere weather', 'light']
-    
-    loc = CrashLocations()
-    locData = loc.getIncidentInfo()
-    locTargets = loc.getIncidentSeverity()
-    
-    # convert lists into numerical arrays
-    locDataArray = np.asarray(locData)
-    locTargetArray = np.asarray(locTargets)
-    
-    # create decision tree
-    clf = tree.DecisionTreeClassifier() # max_depth
-    clf = clf.fit(locDataArray, locTargetArray)
-    
-    # export decision tree
-    tree.export_graphviz(clf, out_file='tree.dot',
-                                feature_names=featureNames,
-                                class_names=classNames,
-                                filled=True, rounded=True,
-                                special_characters=True)
-    """
-    # VERSION WITH WEATHER CONDITIONS ONLY
-    # initialise variables for input into ML
-    classNames = ['low', 'medium', 'high', 'very high']
-    featureNames = ['atmosphere weather', 'light']
-    
-    loc = CrashLocations()
-    locData = loc.getIncidentWeatherInfo()
-    locTargets = loc.getIncidentSeverity()
-    
-    # convert lists into numerical arrays
-    locDataArray = np.asarray(locData)
-    locTargetArray = np.asarray(locTargets)
-    
-    # create decision tree
-    clf = tree.DecisionTreeClassifier() # max_depth
-    clf = clf.fit(locDataArray, locTargetArray)
-    
-    # export decision tree
-    tree.export_graphviz(clf, out_file='tree.dot',
-                                feature_names=featureNames,
-                                class_names=classNames,
-                                filled=True, rounded=True,
-                                special_characters=True)     
+      ml = MachineLearning()
+      inputData = InputCrashLocation()
+      lat = -27.464934
+      lon = 153.029545
+      
+      ml.initTreeWeather()
+      inputData.addData(lon, lat)
+      predictInput = inputData.getWeatherInfo()
+      predictOutput = predictDanger(predictInput)
+      print(predictOutput)
+      
     
 if __name__ == "__main__":
     main()
