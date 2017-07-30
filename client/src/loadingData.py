@@ -1,11 +1,14 @@
 import csv
 import json
 import requests
+import numpy as np
+from sklearn import tree
 import datetime
 
 class DataType(object):
     def __init__(self):
         self._total_info = []
+        self._weather_info = []
         self._total_severity =[]
         self._total_speed = []
 
@@ -23,9 +26,12 @@ class DataType(object):
 
     def getIncidentInfo(self):
         return self._total_info
+    
+    def getIncidentWeatherInfo(self):
+        return self._weather_info
 
     def getIncidentSeverity(self):
-        return self._total_severity        
+        return self._total_severity       
 
     def getSpeed(self):
         return self._total_speed
@@ -157,12 +163,18 @@ class CrashLocations(DataType):
                 line[11] = None
 
             #Storing data for line
-            list_line = [(float(line[8]), float(line[9])),
+            list_line = [float(line[8]),
+                         float(line[9]),
                          self.convertAtmosWeather(line[31]),
                          self.convertLight(line[32])]
+            weather_line = [self.convertAtmosWeather(line[31]),
+                            self.convertLight(line[32])]
 
             #storing to total
             self._total_info.append(list_line)
+            
+            #storing to weather
+            self._weather_info.append(weather_line)
 
             #Store to severity
             self._total_severity.append(self.convertSeverity(line[1]))
@@ -189,8 +201,10 @@ class InputCrashLocation(DataType):
 
         self._total_info.append(inputData)
 
+        print(data)  
+
     def convertTimeToDawnDusk(self,unixTimeSunrise, unixTimeSunset):
-        """ determine the level of light from time""
+        """ determine the level of light from time"""
         sunrise = datetime.datetime.fromtimestamp(unixTimeSunrise)
         sunset = datetime.datetime.fromtimestamp(unixTimeSunset)
         current = datetime.datetime.now()
@@ -199,11 +213,56 @@ class InputCrashLocation(DataType):
             return 1
         elif current.time() >= sunset.time() or current.time() <= sunrise.time():
             return 2
-        return 0      
+        return 0 
 
 def main():
-    #x = CrashLocations()
-    x = InputCrashLocation()
+    """ VERSION WITH LONG/LAT AND WEATHER CONDITIONS
+    # initialise variables for input into ML
+    classNames = ['low', 'medium', 'high', 'very high']
+    featureNames = ['longitude', 'latitude', 'atmosphere weather', 'light']
+    
+    loc = CrashLocations()
+    locData = loc.getIncidentInfo()
+    locTargets = loc.getIncidentSeverity()
+    
+    # convert lists into numerical arrays
+    locDataArray = np.asarray(locData)
+    locTargetArray = np.asarray(locTargets)
+    
+    # create decision tree
+    clf = tree.DecisionTreeClassifier() # max_depth
+    clf = clf.fit(locDataArray, locTargetArray)
+    
+    # export decision tree
+    tree.export_graphviz(clf, out_file='tree.dot',
+                                feature_names=featureNames,
+                                class_names=classNames,
+                                filled=True, rounded=True,
+                                special_characters=True)
+    """
+    # VERSION WITH WEATHER CONDITIONS ONLY
+    # initialise variables for input into ML
+    classNames = ['low', 'medium', 'high', 'very high']
+    featureNames = ['atmosphere weather', 'light']
+    
+    loc = CrashLocations()
+    locData = loc.getIncidentWeatherInfo()
+    locTargets = loc.getIncidentSeverity()
+    
+    # convert lists into numerical arrays
+    locDataArray = np.asarray(locData)
+    locTargetArray = np.asarray(locTargets)
+    
+    # create decision tree
+    clf = tree.DecisionTreeClassifier() # max_depth
+    clf = clf.fit(locDataArray, locTargetArray)
+    
+    # export decision tree
+    tree.export_graphviz(clf, out_file='tree.dot',
+                                feature_names=featureNames,
+                                class_names=classNames,
+                                filled=True, rounded=True,
+                                special_characters=True)     
     
 if __name__ == "__main__":
     main()
