@@ -11,6 +11,7 @@ import Header from './components/Header';
 import Map from './pages/Map';
 import Help from './pages/Help';
 import UserAccount from './pages/UserAccount';
+import AboutMap from './pages/AboutMap';
 
 const muiTheme = getMuiTheme({
     palette: {
@@ -42,6 +43,7 @@ class App extends Component {
                         <Route exact path="/" component={Map} />
                         <Route path="/help" component={Help} />
                         <Route path="/account" component={UserAccount} />
+                        <Route path="/aboutmap" component={AboutMap} />
                         
                     </div>
                 </MuiThemeProvider>
