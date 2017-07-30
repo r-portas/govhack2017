@@ -193,6 +193,10 @@ class InputCrashLocation(DataType):
     
     def getTotalInfo(self):
         return self._total_info
+    
+    def clearData(self):
+        self._total_info.clear()
+        self._weather_info.clear()
 
     def addData(self, lon, lat):
         response = requests.get("http://api.openweathermap.org/data/2.5/weather?lat="+str(lat)+"&lon="+str(lon)+"&appid=8617122af42ff01a0f0a2bab082b3e2f")
@@ -280,24 +284,36 @@ class MachineLearning(object):
         """
         
     def predictDanger(self, predictInput):
-        return self._clf.predict(predictInput)
+        predictInputArray = np.asarray(predictInput)
+        reshapedArray = predictInputArray.reshape(-1, 1)
+        return self._clf.predict(predictInputArray)
+    
+    def printInfo(self, lon, lat, atmosReading, lightReading, severity):
+        print("INPUT")
+        print("Location: " + str(lon) + ", " + str(lat))
+        print("Atmosphere weather: " + atmosReading)
+        print("Lighting: " + lightReading)
+        print("----------------\nOUTPUT")
+        print("Severity: " + severity)
         
 def main():
-      ml = MachineLearning()
-      inputData = InputCrashLocation()
-      lat = -27.464934
-      lon = 153.029545
+    # to initialise
+    ml = MachineLearning()
+    inputData = InputCrashLocation()
+    lat = -27.464934
+    lon = 153.029545
+    ml.initTreeWeather()
       
-      ml.initTreeWeather()
-      inputData.addData(lon, lat)
-      predictInput = inputData.getWeatherInfo()
-      print(inputData.getTotalInfo())
-      print(predictInput)
-      print(predictInput[3])
-      print("Atmosphere weather: " + ml._atmos_levels[predictInput[2]])
-      print("Lighting: " + ml._light_levels[predictInput[3]])
-      predictOutput = ml.predictDanger(predictInput)
-      print(predictOutput)
+    # input data into ML model and make prediction
+    inputData.addData(lon, lat)
+    predictInput = inputData.getWeatherInfo()
+    predictOutput = ml.predictDanger(predictInput)
+    
+    # get readings and print in human readable format
+    atmosReading = ml._atmos_levels[predictInput[0][0]]
+    lightReading = ml._light_levels[predictInput[0][1]]
+    severity = ml._class_names[predictOutput[0]]
+    ml.printInfo(lon, lat, atmosReading, lightReading, severity)
       
     
 if __name__ == "__main__":
