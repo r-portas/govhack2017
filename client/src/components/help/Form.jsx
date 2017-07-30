@@ -5,6 +5,9 @@ import SwipeableViews from 'react-swipeable-views';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
+import UploadPreview from 'material-ui-upload/UploadPreview';
+import Upload from 'material-ui-upload/Upload';
+
 import { Link } from 'react-router-dom';
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import {fullWhite} from 'material-ui/styles/colors';
@@ -168,6 +171,40 @@ class Witness extends Component {
     }
 }
 
+class WitnessForm extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return <div>
+            <form id='form-driver'>
+                <TextField
+                errorText="This field is required"
+                floatingLabelText="First Name"
+                name="fname"
+                /><br />
+                <TextField
+                errorText="This field is required"
+                floatingLabelText="Last Name"
+                name="lname"
+                /><br />
+                <TextField
+                errorText="This field is required"
+                floatingLabelText="Contact Number"
+                type="number"
+                name="mobile"
+                /><br />
+            </form>
+            <div className="footer help-form-actions">
+                <RaisedButton label="Cancel" onTouchTap={this.props.previousState} primary={true} style={style}/>
+                <RaisedButton label="Save" onTouchTap={this.props.nextState} primary={true} style={style}/>
+
+            </div>
+        </div>
+    }
+}
+
 class Evidence extends Component {
     constructor(props) {
         super(props);
@@ -183,6 +220,60 @@ class Evidence extends Component {
                 <CardActions className="help-card-actions">
                     <RaisedButton primary={true} label="Yes" onTouchTap={this.props.acceptState}/>
                     <RaisedButton primary={true} label="No" onTouchTap={this.props.nextState}/>
+                </CardActions>
+            </Card>
+            <div className="footer">
+                <RaisedButton
+                    icon={<ArrowBack />}
+                    className="btn-footer"
+                    style={style}
+                    primary={true}
+                    label="Go Back"
+                    onTouchTap={this.props.previousState}
+                />
+             </div>
+        </ div>;
+    }
+}
+
+class EvidenceForm extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            pictures: {}
+        };
+    }
+
+    onFileLoad = (e, file) => console.log(e.target.result, file.name);
+
+    render() {
+        return <div className="help-card"> 
+            <h2 >Add Evidence</h2>
+            <input multiple="multiple" type="file" accept="image/*" capture="camera" />
+
+            <div className="footer help-form-actions">
+                <RaisedButton label="Cancel" onTouchTap={this.props.previousState} primary={true} style={style}/>
+                <RaisedButton label="Save" onTouchTap={this.props.nextState} primary={true} style={style}/>
+            </div>
+        </div>    
+    }
+}
+
+class SaveForm extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return <div className="help-card"> 
+            <Card className="help-card-container">
+                <CardText>  
+                     <h2 className="help-h2"> Submit Form? </h2> 
+                </CardText>
+
+                <CardActions className="help-card-actions">
+                    <RaisedButton primary={true} label="Yes" containerElement={<Link to="/" />}/>
+                    <RaisedButton primary={true} label="No" containerElement={<Link to="/" />}/>
                 </CardActions>
             </Card>
             <div className="footer">
@@ -242,12 +333,24 @@ export default class Form extends Component {
         this.handleChange(3);
     }
 
+    witnessAcceptState() {
+        this.handleChange(6);
+    }
+
     evidencePreviousState() {
         this.handleChange(2);
     }
 
     evidenceNextState() {
         this.handleChange(4);
+    }
+
+    evidenceAcceptState() {
+        this.handleChange(7);
+    }
+
+    savePreviousState() {
+        this.handleChange(3);
     }
 
     render() {
@@ -280,20 +383,34 @@ export default class Form extends Component {
                     <Witness 
                     previousState={this.witnessPreviousState.bind(this)}
                     nextState={this.witnessNextState.bind(this)} 
+                    acceptState={this.witnessAcceptState.bind(this)} 
                     />
                 </div>
                 <div>
                     <Evidence 
                     previousState={this.evidencePreviousState.bind(this)}
                     nextState={this.evidenceNextState.bind(this)} 
+                    acceptState={this.evidenceAcceptState.bind(this)} 
                     />
                 </div>
                 <div>
-                    Save this
+                    <SaveForm 
+                    previousState={this.witnessNextState.bind(this)}
+                    />
                 </div>
                 <DriverForm 
                 previousState={this.witnessPreviousState.bind(this)}
                 nextState={this.driversNextState.bind(this)} 
+                />
+
+                <WitnessForm 
+                previousState={this.evidencePreviousState.bind(this)}
+                nextState={this.witnessNextState.bind(this)} 
+                />
+
+                <EvidenceForm 
+                previousState={this.savePreviousState.bind(this)}
+                nextState={this.evidenceNextState.bind(this)} 
                 />
             </SwipeableViews>
         </div>;
