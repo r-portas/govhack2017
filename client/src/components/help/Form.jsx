@@ -31,7 +31,6 @@ class Injuries extends Component {
         super(props);
     }
 
-
     render() {
         return <div className="help-card"> 
             <Card className="help-card-container">
@@ -86,6 +85,55 @@ class Drivers extends Component {
                 />
              </div>
         </ div>;
+    }
+}
+
+class DriverForm extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return <div>
+            <form id='form-driver'>
+                <TextField
+                errorText="This field is required"
+                floatingLabelText="First Name"
+                name="fname"
+                /><br />
+                <TextField
+                errorText="This field is required"
+                floatingLabelText="Last Name"
+                name="lname"
+                /><br />
+                <TextField
+                errorText="This field is required"
+                floatingLabelText="Contact Number"
+                type="number"
+                name="mobile"
+                /><br />
+                <TextField
+                errorText="This field is required"
+                floatingLabelText="License Plate"
+                name="lplate"
+                /><br />
+                <TextField
+                errorText="This field is required"
+                floatingLabelText="Registration"
+                name="rego"
+                /><br />
+                <TextField
+                errorText="This field is required"
+                floatingLabelText="Vehicle Model"
+                name="model"
+                /><br />
+            </form>
+            <div className="footer help-form-actions">
+                <RaisedButton label="Cancel" onTouchTap={this.props.previousState} primary={true} style={style}/>
+                <RaisedButton label="Save" onTouchTap={this.props.nextState} primary={true} style={style}/>
+
+            </div>
+        </div>
     }
 }
 
@@ -182,6 +230,10 @@ export default class Form extends Component {
         this.handleChange(2);
     }
 
+    driversAcceptState() {
+        this.handleChange(5);
+    }
+
     witnessPreviousState() {
         this.handleChange(1);
     }
@@ -213,42 +265,6 @@ export default class Form extends Component {
             onChangeIndex={this.handleChange}
             >
                 <div>
-                    <form id='form-driver'>
-                        <TextField
-                        errorText="This field is required"
-                        floatingLabelText="First Name"
-                        name="fname"
-                        /><br />
-                        <TextField
-                        errorText="This field is required"
-                        floatingLabelText="Last Name"
-                        name="lname"
-                        /><br />
-                        <TextField
-                        errorText="This field is required"
-                        floatingLabelText="Contact Number"
-                        type="number"
-                        name="mobile"
-                        /><br />
-                        <TextField
-                        errorText="This field is required"
-                        floatingLabelText="License Plate"
-                        name="lplate"
-                        /><br />
-                        <TextField
-                        errorText="This field is required"
-                        floatingLabelText="Registration"
-                        name="rego"
-                        /><br />
-                        <TextField
-                        errorText="This field is required"
-                        floatingLabelText="Vehicle Model"
-                        name="model"
-                        /><br />
-                    </form>
-                    
-                </div>
-                <div>
                     <Injuries 
                     nextState={this.injuriesNextState.bind(this)} 
                     />
@@ -257,6 +273,7 @@ export default class Form extends Component {
                     <Drivers 
                     previousState={this.driversPreviousState.bind(this)}
                     nextState={this.driversNextState.bind(this)} 
+                    acceptState={this.driversAcceptState.bind(this)} 
                     />
                 </div>
                 <div>
@@ -274,7 +291,10 @@ export default class Form extends Component {
                 <div>
                     Save this
                 </div>
-                
+                <DriverForm 
+                previousState={this.witnessPreviousState.bind(this)}
+                nextState={this.driversNextState.bind(this)} 
+                />
             </SwipeableViews>
         </div>;
         }
