@@ -3,6 +3,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import SwipeableViews from 'react-swipeable-views';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 
 import { Link } from 'react-router-dom';
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
@@ -212,6 +213,42 @@ export default class Form extends Component {
             onChangeIndex={this.handleChange}
             >
                 <div>
+                    <form id='form-driver'>
+                        <TextField
+                        errorText="This field is required"
+                        floatingLabelText="First Name"
+                        name="fname"
+                        /><br />
+                        <TextField
+                        errorText="This field is required"
+                        floatingLabelText="Last Name"
+                        name="lname"
+                        /><br />
+                        <TextField
+                        errorText="This field is required"
+                        floatingLabelText="Contact Number"
+                        type="number"
+                        name="mobile"
+                        /><br />
+                        <TextField
+                        errorText="This field is required"
+                        floatingLabelText="License Plate"
+                        name="lplate"
+                        /><br />
+                        <TextField
+                        errorText="This field is required"
+                        floatingLabelText="Registration"
+                        name="rego"
+                        /><br />
+                        <TextField
+                        errorText="This field is required"
+                        floatingLabelText="Vehicle Model"
+                        name="model"
+                        /><br />
+                    </form>
+                    
+                </div>
+                <div>
                     <Injuries 
                     nextState={this.injuriesNextState.bind(this)} 
                     />
@@ -237,6 +274,7 @@ export default class Form extends Component {
                 <div>
                     Save this
                 </div>
+                
             </SwipeableViews>
         </div>;
         }
