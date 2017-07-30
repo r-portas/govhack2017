@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import MapGL from 'react-map-gl';
 import DeckGLOverlay from './../deckgl-overlay.js';
-import Footer from './../components/Footer'
+import Footer from './../components/Footer';
 import {csv as requestCsv} from 'd3-request';
 import * as $ from 'jquery';
 

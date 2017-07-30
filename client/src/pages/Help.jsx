@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import Injuries from '../components/help/Injuries';
+import SwipeableViews from 'react-swipeable-views';
 
-export default class Footer extends Component {
+import {HelpFooter} from '../components/Footer'
+import Form from '../components/help/Form';
+import Injuries from '../components/help/Injuries';
+import * as $ from 'jquery';
+
+export class HelpOld extends Component {
 
     onClick(e) {
         console.log('Clicked');
@@ -12,6 +17,21 @@ export default class Footer extends Component {
         return (
             <div>
                 <Injuries onNextClicked={this.onClick}/>
+            </div>
+        );
+    }    
+}
+
+export default class Help extends Component {
+
+    onClick(e) {
+        console.log('Clicked');
+    }
+
+    render() {
+        return (
+            <div>
+                <Form/>
             </div>
         );
     }    

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import * as $ from 'jquery';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {
@@ -18,6 +19,18 @@ const muiTheme = getMuiTheme({
 });
 
 class App extends Component {
+
+    componentDidMount() {
+        window.$ = $;
+        // TODO
+        // bad Glen!!!
+        $(window).on('resize', () => {
+            const height = $(window).height() - $('#app-header').height();
+            $('.help-card').height(height);
+        });
+
+        $(window).resize();
+    }
 
     render() {
         return (

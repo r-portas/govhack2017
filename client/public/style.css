@@ -10,3 +10,7 @@
 .btn-footer {
     flex-grow: 1;
 }
+
+#help-tabs {
+    display: none;
+}
