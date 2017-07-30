@@ -10,41 +10,42 @@ use App\Incident;
 use App\IncidentPhoto;
 use App\IncidentVehicle;
 use App\IncidentWitness;
+use Auth;
 
 class IncidentController extends Controller
 {
 	public function store(Request $request){
 		//user id somehow
-		$userID = 1;
+		$userID = Auth::user()->id;
 		$incident = Incident::create([
 			'user_id'=>$userID,
-			'description'=>$request->description,
-			'location'=>$location,
-			'damage'=>$damage
+			'description'=>$request->input('description'),
+			'location'=>$request->input('location'),
+			'damage'=>$request->input('damage')
 		]);
 
-		$this->savePhotos($request->photos, $incident->id);
+		$this->savePhotos($request->input('photos'), $incident->id);
 
-		foreach($request->vehicles as $vehicle){
+		foreach($request->input('vehicles') as $vehicle){
 			IncidentVehicle::create([
 				'incident_id'=>$incident->id,
-				'owned_by_reporter'=>$vehicle->owned_by_reporter,
-				'registration'=>$vehicle->registration,
-				'licence_plate'=>$vehicle->licence_plate,
-				'model'=>$vehicle->model,
-				'first_name'=>$vehicle->first_name,
-				'last_name'=>$vehicle->last_name,
-				'phone'=>$vehicle->phone
+				'owned_by_reporter'=>$vehicle['owned_by_reporter'],
+				'registration'=>$vehicle['registration'],
+				'licence_plate'=>$vehicle['licence_plate'],
+				'model'=>$vehicle['model'],
+				'first_name'=>$vehicle['first_name'],
+				'last_name'=>$vehicle['last_name'],
+				'phone'=>$vehicle['phone']
 			]);
 		}
 
-		foreach($request->witnesses as $witness){
+		foreach($request->input('witnesses') as $witness){
 			IncidentWitness::create([
 				'incident_id'=>$incident->id,
-				'first_name'=>$witness->first_name,
-				'last_name'=>$witness->last_name,
-				'phone'=>$witness->phone,
-				'relation_to_event'=>$witness->relation_to_event
+				'first_name'=>$witness['first_name'],
+				'last_name'=>$witness['last_name'],
+				'phone'=>$witness['phone'],
+				'relation_to_event'=>$witness['relation_to_event']
 			]);
 		}
 
@@ -84,7 +85,7 @@ class IncidentController extends Controller
 			$existingPhoto->delete();
 		} 
 
-		$this->savePhotos($request->photos, $id);
+		$this->savePhotos($request->input('photos'), $id);
  
         return response()->json('success');
 	}

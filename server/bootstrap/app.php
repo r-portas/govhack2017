@@ -104,14 +104,6 @@ $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
 });
 
 config([
-	'services' => [
-
-	    'google' => [
-	        'client_id'     => env('GOOGLE_ID'),
-	        'client_secret' => env('GOOGLE_SECRET'),
-	        'redirect'      => env('GOOGLE_REDIRECT')
-	    ]
-	],
 	'filesystems' =>[
 		'default' => 'local',
  

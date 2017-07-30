@@ -35,8 +35,17 @@ class UserController extends Controller
         $user->password=sha1($this->salt.$request->input('password'));
         $user->email=$request->input('email');
         $user->api_token=str_random(60);
+
+        if($request->input('insurance_company')){
+        	$user->insurance_company = $request->input('insurance_company');
+        }
+
+        if($request->input('insurance_account_number')){
+        	$user->insurance_company = $request->input('insurance_account_number');
+        }
+
         if($user->save()){
-          return "User registered!";
+          	return "User registered!";
         } else {
           return "Too bad";
         }

@@ -31,6 +31,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     protected $table = 'User';
 
+    protected $with = 'incidents';
+
     public function incidents(){
         return $this->hasMany('App\Incident', 'user_id');
     }
