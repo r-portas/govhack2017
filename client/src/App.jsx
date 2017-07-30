@@ -28,6 +28,8 @@ class App extends Component {
         $(window).on('resize', () => {
             const height = $(window).height() - $('#app-header').height();
             $('.help-card').height(height);
+            $('#help-form-body').height(height);
+            $('.react-swipeable-view-container').height(height);
         });
 
         $(window).resize();

@@ -363,37 +363,37 @@ export default class Form extends Component {
                 <Tab label="Tab Two" value={1} />
                 <Tab label="Tab Three" value={2} />
             </Tabs>
-            <SwipeableViews id="help-form-body"
+            <SwipeableViews id="help-form-body" 
             index={this.state.slideIndex}
             onChangeIndex={this.handleChange}
             >
-                <div>
+                <div className="full-width">
                     <Injuries 
                     nextState={this.injuriesNextState.bind(this)} 
                     />
                 </div>
-                <div>
+                <div className="full-width">
                     <Drivers 
                     previousState={this.driversPreviousState.bind(this)}
                     nextState={this.driversNextState.bind(this)} 
                     acceptState={this.driversAcceptState.bind(this)} 
                     />
                 </div>
-                <div>
+                <div className="full-width">
                     <Witness 
                     previousState={this.witnessPreviousState.bind(this)}
                     nextState={this.witnessNextState.bind(this)} 
                     acceptState={this.witnessAcceptState.bind(this)} 
                     />
                 </div>
-                <div>
+                <div className="full-width">
                     <Evidence 
                     previousState={this.evidencePreviousState.bind(this)}
                     nextState={this.evidenceNextState.bind(this)} 
                     acceptState={this.evidenceAcceptState.bind(this)} 
                     />
                 </div>
-                <div>
+                <div className="full-width">
                     <SaveForm 
                     previousState={this.witnessNextState.bind(this)}
                     />
