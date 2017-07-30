@@ -98,6 +98,7 @@ class DriverForm extends Component {
 
     render() {
         return <div>
+            <h3 className="form-header">Other Vehicle Details</h3>
             <form id='form-driver'>
                 <TextField
                 errorText="This field is required"
@@ -178,6 +179,7 @@ class WitnessForm extends Component {
 
     render() {
         return <div>
+            <h3 className="form-header">Witness Details</h3>
             <form id='form-driver'>
                 <TextField
                 errorText="This field is required"
@@ -244,18 +246,34 @@ class EvidenceForm extends Component {
         };
     }
 
-    onFileLoad = (e, file) => console.log(e.target.result, file.name);
+    onChange = (pictures) => {
+        this.setState({pictures});
+        $(".upload-card img").parent().parent().css({"display":"flex"});
+        $(".upload-card button").last().parent().css({"display":"flex", "margin":"0px !important"});
+    };
+
+    componentDidMount() {
+        
+
+    }
 
     render() {
-        return <div className="help-card"> 
-            <h2 >Add Evidence</h2>
-            <input multiple="multiple" type="file" accept="image/*" capture="camera" />
-
+        return <div className="full-width"><div className="help-card"> 
+            <div className="upload-card">
+                <UploadPreview
+                id="upload-evidence"
+                title="Uplaod Evidence"
+                label="Add"
+                initialItems={this.state.pictures}
+                onChange={this.onChange}
+                />
+            </div>
             <div className="footer help-form-actions">
                 <RaisedButton label="Cancel" onTouchTap={this.props.previousState} primary={true} style={style}/>
                 <RaisedButton label="Save" onTouchTap={this.props.nextState} primary={true} style={style}/>
             </div>
         </div>    
+        </div>
     }
 }
 
