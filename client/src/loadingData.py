@@ -185,10 +185,8 @@ class CrashLocations(DataType):
 
 class InputCrashLocation(DataType):
     def __init__(self):
-        self._total_info = []
-        self._weather_info = []
-
-        self.addData(-27.47, 153.03)
+        self._total_info = [0]
+        self._weather_info = [0]
 
     def getWeatherInfo(self):
         return self._weather_info
@@ -208,10 +206,10 @@ class InputCrashLocation(DataType):
         weatherData = [self.convertAtmosWeather(data['weather'][0]['main']),#clear/raining
                        self.convertTimeToDawnDusk(data['sys']['sunrise'],data['sys']['sunset'])]
 
-        self._total_info.append(inputData)
-        self._weather_info.append(weatherData)
+        self._total_info[0] = inputData
+        self._weather_info[0] = weatherData
 
-        print(data)  
+        # print(data)  
 
     def convertTimeToDawnDusk(self,unixTimeSunrise, unixTimeSunset):
         """ determine the level of light from time"""
@@ -231,6 +229,8 @@ class MachineLearning(object):
         self._class_names = ['low', 'medium', 'high', 'very high']
         self._feature_names_full = ['longitude', 'latitude', 'atmosphere weather', 'light']
         self._feature_names_weather = ['atmosphere weather', 'light']
+        self._atmos_levels = ['clear', 'raining']
+        self._light_levels = ['daylight', 'dawndusk', 'darkness - lighted', 'darkness- unlighted']
         self._clf = None
         
     def initTreeFull(self):
@@ -291,7 +291,12 @@ def main():
       ml.initTreeWeather()
       inputData.addData(lon, lat)
       predictInput = inputData.getWeatherInfo()
-      predictOutput = predictDanger(predictInput)
+      print(inputData.getTotalInfo())
+      print(predictInput)
+      print(predictInput[3])
+      print("Atmosphere weather: " + ml._atmos_levels[predictInput[2]])
+      print("Lighting: " + ml._light_levels[predictInput[3]])
+      predictOutput = ml.predictDanger(predictInput)
       print(predictOutput)
       
     
