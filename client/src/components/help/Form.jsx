@@ -17,7 +17,7 @@ const styles = {
         fontWeight: 400
     },
     slide: {
-        padding: 10,
+        padding: 0,
     }
 };
 
@@ -26,16 +26,21 @@ const style = {
 };
 
 class Injuries extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+
     render() {
         return <div className="help-card"> 
             <Card className="help-card-container">
                 <CardText>  
-                     <h2 className="help-h2"> Is anyone injured? </h2> 
+                     <h2 className="help-h2"> Is anyone injured/trapped? </h2> 
                 </CardText>
 
                 <CardActions className="help-card-actions">
                     <RaisedButton primary={true} href="tel:000" label="Yes"/>
-                    <RaisedButton primary={true} label="No"/>
+                    <RaisedButton primary={true} label="No" onTouchTap={this.props.nextState}/>
                 </CardActions>
             </Card>
             <div className="footer">
@@ -53,15 +58,96 @@ class Injuries extends Component {
 }
 
 class Drivers extends Component {
-    
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return <div className="help-card"> 
+            <Card className="help-card-container">
+                <CardText>  
+                     <h2 className="help-h2"> Is another vehicle involved? </h2> 
+                </CardText>
+
+                <CardActions className="help-card-actions">
+                    <RaisedButton primary={true} label="Yes" onTouchTap={this.props.acceptState}/>
+                    <RaisedButton primary={true} label="No" onTouchTap={this.props.nextState}/>
+                </CardActions>
+            </Card>
+            <div className="footer">
+                <RaisedButton
+                    icon={<ArrowBack />}
+                    className="btn-footer"
+                    style={style}
+                    primary={true}
+                    label="Go Back"
+                    onTouchTap={this.props.previousState}
+                />
+             </div>
+        </ div>;
+    }
 }
 
 class Witness extends Component {
-    
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return <div className="help-card"> 
+            <Card className="help-card-container">
+                <CardText>  
+                     <h2 className="help-h2"> Is there a Witness? </h2> 
+                </CardText>
+
+                <CardActions className="help-card-actions">
+                    <RaisedButton primary={true} label="Yes" onTouchTap={this.props.acceptState}/>
+                    <RaisedButton primary={true} label="No" onTouchTap={this.props.nextState}/>
+                </CardActions>
+            </Card>
+            <div className="footer">
+                <RaisedButton
+                    icon={<ArrowBack />}
+                    className="btn-footer"
+                    style={style}
+                    primary={true}
+                    label="Go Back"
+                    onTouchTap={this.props.previousState}
+                />
+             </div>
+        </ div>;
+    }
 }
 
 class Evidence extends Component {
-    
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return <div className="help-card"> 
+            <Card className="help-card-container">
+                <CardText>  
+                     <h2 className="help-h2"> Add Evidence? </h2> 
+                </CardText>
+
+                <CardActions className="help-card-actions">
+                    <RaisedButton primary={true} label="Yes" onTouchTap={this.props.acceptState}/>
+                    <RaisedButton primary={true} label="No" onTouchTap={this.props.nextState}/>
+                </CardActions>
+            </Card>
+            <div className="footer">
+                <RaisedButton
+                    icon={<ArrowBack />}
+                    className="btn-footer"
+                    style={style}
+                    primary={true}
+                    label="Go Back"
+                    onTouchTap={this.props.previousState}
+                />
+             </div>
+        </ div>;
+    }
 }
 
 export default class Form extends Component {
@@ -78,8 +164,37 @@ export default class Form extends Component {
 
     handleChange = (value) => {
         this.setState({
-            slideIndex: value,
+            slideIndex: value
         });
+        $(window).resize();
+    }
+
+    injuriesNextState() {
+        this.handleChange(1);
+    }
+    
+    driversPreviousState() {
+        this.handleChange(0);
+    }
+
+    driversNextState() {
+        this.handleChange(2);
+    }
+
+    witnessPreviousState() {
+        this.handleChange(1);
+    }
+
+    witnessNextState() {
+        this.handleChange(3);
+    }
+
+    evidencePreviousState() {
+        this.handleChange(2);
+    }
+
+    evidenceNextState() {
+        this.handleChange(4);
     }
 
     render() {
@@ -97,13 +212,30 @@ export default class Form extends Component {
             onChangeIndex={this.handleChange}
             >
                 <div>
-                    <Injuries />
+                    <Injuries 
+                    nextState={this.injuriesNextState.bind(this)} 
+                    />
                 </div>
-                <div style={styles.slide}>
-                    
+                <div>
+                    <Drivers 
+                    previousState={this.driversPreviousState.bind(this)}
+                    nextState={this.driversNextState.bind(this)} 
+                    />
                 </div>
-                <div style={styles.slide}>
-                    slide n°3
+                <div>
+                    <Witness 
+                    previousState={this.witnessPreviousState.bind(this)}
+                    nextState={this.witnessNextState.bind(this)} 
+                    />
+                </div>
+                <div>
+                    <Evidence 
+                    previousState={this.evidencePreviousState.bind(this)}
+                    nextState={this.evidenceNextState.bind(this)} 
+                    />
+                </div>
+                <div>
+                    Save this
                 </div>
             </SwipeableViews>
         </div>;
