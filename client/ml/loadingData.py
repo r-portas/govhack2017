@@ -11,18 +11,22 @@ class DataType(object):
         self._weather_info = []
         self._total_severity =[]
         self._total_speed = []
+        self._locations = []
 
         self.process_file()
 
-        self.writecsv("forSophiaLocations.csv")
+        self.writecsv("forSophiaLocations.csv", self._total_info)
 
     def process_file(self):
         pass
 
-    def writecsv(self, name):
+    def writecsv(self, name, content):
         file = open(name, "w")
-        file.write(str(self._total_info))
+        file.write(str(content))
         file.close()
+        
+    def getLocations(self):
+        return self._locations
 
     def getIncidentInfo(self):
         return self._total_info
@@ -169,12 +173,17 @@ class CrashLocations(DataType):
                          self.convertLight(line[32])]
             weather_line = [self.convertAtmosWeather(line[31]),
                             self.convertLight(line[32])]
+            location_line = [float(line[8]),
+                             float(line[9])]
 
             #storing to total
             self._total_info.append(list_line)
             
             #storing to weather
             self._weather_info.append(weather_line)
+            
+            #storing locations
+            self._locations.append(location_line)
 
             #Store to severity
             self._total_severity.append(self.convertSeverity(line[1]))
@@ -227,7 +236,7 @@ class InputCrashLocation(DataType):
             return 2
         return 0 
     
-class MachineLearning(object):
+class MachineLearning(DataType):
     def __init__(self):
         self._predicted_classes = []
         self._class_names = ['low', 'medium', 'high', 'very high']
@@ -236,13 +245,13 @@ class MachineLearning(object):
         self._atmos_levels = ['clear', 'raining']
         self._light_levels = ['daylight', 'dawndusk', 'darkness - lighted', 'darkness- unlighted']
         self._clf = None
+        self._loc = CrashLocations()
         
     def initTreeFull(self):
         """VERSION WITH LONG/LAT AND WEATHER CONDITIONS"""
         # initialise variables for input into ML
-        loc = CrashLocations()
-        locData = loc.getIncidentInfo()
-        locTargets = loc.getIncidentSeverity()
+        locData = self._loc.getIncidentInfo()
+        locTargets = self._loc.getIncidentSeverity()
         
         # convert lists into numerical arrays
         locDataArray = np.asarray(locData)
@@ -262,9 +271,8 @@ class MachineLearning(object):
     def initTreeWeather(self):
         """VERSION WITH WEATHER CONDITIONS ONLY"""
         # initialise variables for input into ML
-        loc = CrashLocations()
-        locData = loc.getIncidentWeatherInfo()
-        locTargets = loc.getIncidentSeverity()
+        locData = self._loc.getIncidentWeatherInfo()
+        locTargets = self._loc.getIncidentSeverity()
         
         # convert lists into numerical arrays
         locDataArray = np.asarray(locData)
@@ -285,26 +293,58 @@ class MachineLearning(object):
         
     def predictDanger(self, predictInput):
         predictInputArray = np.asarray(predictInput)
-        reshapedArray = predictInputArray.reshape(-1, 1)
         return self._clf.predict(predictInputArray)
     
     def printInfo(self, lon, lat, atmosReading, lightReading, severity):
-        print("INPUT")
+        print("----------------\nINPUT")
         print("Location: " + str(lon) + ", " + str(lat))
         print("Atmosphere weather: " + atmosReading)
         print("Lighting: " + lightReading)
-        print("----------------\nOUTPUT")
+        print("OUTPUT")
         print("Severity: " + severity)
+        
+    def appendCSV(self, filename, content):
+        file = open(filename, "a")
+        file.write(str(content) + "\n")
+        file.close()
+        
+    def createCSV(self):
+        dataType = DataType()
+        inputData = InputCrashLocation()
+        csvRowArray = []
+        
+        with open("mlOutput.csv", "w") as file:
+            # Write headers to CSV
+            wtr = csv.writer(file)
+            wtr.writerows([["Longitutde", "Latitude", "Severity"]])
+            
+            # Write locations to CSV
+            for location in self._loc.getLocations():
+                lon = location[0]
+                lat = location[1]
+                inputData.addData(lon, lat)
+                predictInput = inputData.getWeatherInfo()
+                predictOutput = self.predictDanger(predictInput)
+
+                csvRowArray.append([lon, lat, predictOutput[0]])
+             
+            wtr.writerows(csvRowArray)
+        
         
 def main():
     # to initialise
     ml = MachineLearning()
-    inputData = InputCrashLocation()
+    ml.initTreeWeather()
+    
+    ml.createCSV()  
+    
+if __name__ == "__main__":
+    main()
+
+    """ ADD TO MAIN FOR DUMMY TESTING
+    # input data into ML model and make prediction
     lat = -27.464934
     lon = 153.029545
-    ml.initTreeWeather()
-      
-    # input data into ML model and make prediction
     inputData.addData(lon, lat)
     predictInput = inputData.getWeatherInfo()
     predictOutput = ml.predictDanger(predictInput)
@@ -314,7 +354,4 @@ def main():
     lightReading = ml._light_levels[predictInput[0][1]]
     severity = ml._class_names[predictOutput[0]]
     ml.printInfo(lon, lat, atmosReading, lightReading, severity)
-      
-    
-if __name__ == "__main__":
-    main()
+    """
