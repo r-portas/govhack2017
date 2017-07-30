@@ -9,6 +9,7 @@ import {
 import Header from './components/Header';
 import Map from './pages/Map';
 import Help from './pages/Help';
+import * as $ from 'jquery';
 
 const muiTheme = getMuiTheme({
     palette: {
@@ -17,6 +18,18 @@ const muiTheme = getMuiTheme({
 });
 
 class App extends Component {
+
+    componentDidMount() {
+        window.$ = $;
+        // TODO
+        // bad Glen!!!
+        $(window).on('resize', () => {
+            const height = $(window).height() - $('#app-header').height();
+            $('.help-card').height(height);
+        });
+
+        $(window).resize();
+    }
 
     render() {
         return (

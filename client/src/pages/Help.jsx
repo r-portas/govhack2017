@@ -5,6 +5,8 @@ import SwipeableViews from 'react-swipeable-views';
 import {HelpFooter} from '../components/Footer'
 import Form from '../components/help/Form';
 import Injuries from '../components/help/Injuries';
+import * as $ from 'jquery';
+
 export class HelpOld extends Component {
 
     onClick(e) {
@@ -30,7 +32,6 @@ export default class Help extends Component {
         return (
             <div>
                 <Form/>
-                <HelpFooter/>
             </div>
         );
     }    
