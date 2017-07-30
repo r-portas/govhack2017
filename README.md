@@ -1,3 +1,3 @@
 # DriveSafely
 
-![DriveSafely](demo.png)
+[[ demo.png | width = 100px ]]
