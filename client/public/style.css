@@ -34,3 +34,11 @@
     overflow-y: auto;
     height: inherit;
 }
+
+.help-form-actions {
+    display: flex;
+}
+
+.help-form-actions div {
+    flex-grow: 1;
+}
