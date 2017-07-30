@@ -8,7 +8,7 @@ const AboutMap = () => (
                 title="About"
             />
 
-            
+
             <CardText>
                 <h3>About the project</h3>
                 <p>
@@ -24,6 +24,9 @@ const AboutMap = () => (
                 <p>
                     The 3D map displays all traffic incidents at intersections in
                     the brisbane area.
+
+                    The map is powered by machine learning - it receives data on location, lighting conditions, weather, road conditions, speed limits, and flooding, then predicts the danger level at staggered locations.
+                    This data is gathered from the QLD Government Road Crash Locations dataset, and the Open Weather API.
                 </p>
 
                 <p>
