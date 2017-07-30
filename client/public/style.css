@@ -50,3 +50,28 @@
     width: 100% !important;
     display: table;
 }
+
+.form-header {
+    margin: 10px 15px;
+    font-family: "Roboto";
+    text-transform: initial;
+    font-weight: normal;
+    font-size: 1.5em;
+}
+
+.hide {
+    display: none;
+}
+
+.upload-card {
+    margin: 10px;
+}
+
+.upload-card img {
+    height: 50px;
+    float: left;
+}
+
+#upload-evidence input {
+    display: none;
+}
