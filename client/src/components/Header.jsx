@@ -35,7 +35,7 @@ class Header extends Component {
                 >
                     <MenuItem containerElement={<Link to="/" />} onTouchTap={this.handleClose}>Home</MenuItem>
                     <MenuItem containerElement={<Link to="/help" />} onTouchTap={this.handleClose}>Help</MenuItem>
-                    <MenuItem containerElement={<Link to="/" />} onTouchTap={this.handleClose}>My Account</MenuItem>
+                    <MenuItem containerElement={<Link to="/account" />} onTouchTap={this.handleClose}>My Account</MenuItem>
                     <MenuItem containerElement={<Link to="/" />} onTouchTap={this.handleClose}>Incidents</MenuItem>
                     <MenuItem containerElement={<Link to="/" />} onTouchTap={this.handleClose}>Incidents</MenuItem>
                 </Drawer> 
