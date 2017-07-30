@@ -16,13 +16,16 @@
 }
 
 .help-card {
-    display: flex;
+    display: table-cell;
+    vertical-align: middle;
     align-items: center;
+    margin: auto;
     justify-content: center;
 }
 
 .help-card-container {
     width: calc(100% - 25px);
+    margin: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -41,4 +44,9 @@
 
 .help-form-actions div {
     flex-grow: 1;
+}
+
+.full-width {
+    width: 100% !important;
+    display: table;
 }
