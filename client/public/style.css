@@ -1,0 +1,52 @@
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 2;
+  background: darkgrey;
+  display: flex;
+}
+
+.btn-footer {
+    flex-grow: 1;
+}
+
+#help-tabs {
+    display: none;
+}
+
+.help-card {
+    display: table-cell;
+    vertical-align: middle;
+    align-items: center;
+    margin: auto;
+    justify-content: center;
+}
+
+.help-card-container {
+    width: calc(100% - 25px);
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#form-driver {
+    margin: 0px 10px;
+    overflow-y: auto;
+    height: inherit;
+}
+
+.help-form-actions {
+    display: flex;
+}
+
+.help-form-actions div {
+    flex-grow: 1;
+}
+
+.full-width {
+    width: 100% !important;
+    display: table;
+}

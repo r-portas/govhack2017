@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
 import MenuItem from 'material-ui/MenuItem';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
@@ -28,17 +27,19 @@ class Header extends Component {
 
     render() {
         return (
-            <div>
+            <div id="app-header">
                 <Drawer 
                     docked={false}
                     open={this.state.open}
                     onRequestChange={(open) => this.setState({open})}
                 >
                     <MenuItem containerElement={<Link to="/" />} onTouchTap={this.handleClose}>Home</MenuItem>
-                    <MenuItem containerElement={<Link to="/test" />} onTouchTap={this.handleClose}>Test</MenuItem>
-                    <MenuItem containerElement={<Link to="/map" />} onTouchTap={this.handleClose}>Map</MenuItem>
+                    <MenuItem containerElement={<Link to="/help" />} onTouchTap={this.handleClose}>Help</MenuItem>
+                    <MenuItem containerElement={<Link to="/account" />} onTouchTap={this.handleClose}>My Account</MenuItem>
+                    <MenuItem containerElement={<Link to="/" />} onTouchTap={this.handleClose}>Incidents</MenuItem>
+                    <MenuItem containerElement={<Link to="/aboutmap" />} onTouchTap={this.handleClose}>About map</MenuItem>
                 </Drawer> 
-                <AppBar onLeftIconButtonTouchTap={this.handleToggle} title="GovHack2017"/>
+                <AppBar onLeftIconButtonTouchTap={this.handleToggle} title="DriveSafely"/>
             </div>
         );
     }

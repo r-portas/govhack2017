@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import * as $ from 'jquery';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {
     grey900
 } from 'material-ui/styles/colors';
 
-import Header from './Header';
-import Home from './pages/Home';
-import Test from './pages/Test';
+import Header from './components/Header';
 import Map from './pages/Map';
+import Help from './pages/Help';
+import UserAccount from './pages/UserAccount';
+import AboutMap from './pages/AboutMap';
 
 const muiTheme = getMuiTheme({
     palette: {
@@ -19,6 +21,20 @@ const muiTheme = getMuiTheme({
 
 class App extends Component {
 
+    componentDidMount() {
+        window.$ = $;
+        // TODO
+        // bad Glen!!!
+        $(window).on('resize', () => {
+            const height = $(window).height() - $('#app-header').height();
+            $('.help-card').height(height);
+            $('#help-form-body').height(height);
+            $('.react-swipeable-view-container').height(height);
+        });
+
+        $(window).resize();
+    }
+
     render() {
         return (
             <Router>
@@ -26,9 +42,11 @@ class App extends Component {
                     <div>
                         <Header />
 
-                        <Route exact path="/" component={Home} />
-                        <Route path="/test" component={Test} />
-                        <Route path="/map" component={Map} />
+                        <Route exact path="/" component={Map} />
+                        <Route path="/help" component={Help} />
+                        <Route path="/account" component={UserAccount} />
+                        <Route path="/aboutmap" component={AboutMap} />
+                        
                     </div>
                 </MuiThemeProvider>
             </Router>
