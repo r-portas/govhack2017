@@ -63,9 +63,9 @@ $app->singleton(
 //    App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+ $app->routeMiddleware([
+     'authToken' => App\Http\Middleware\AuthToken::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -78,18 +78,15 @@ $app->singleton(
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 $app->register('Collective\Html\HtmlServiceProvider');
-$app->register('Laravel\Socialite\SocialiteServiceProvider')
 
 class_alias('Collective\Html\HtmlFacade', 'Html');
 
 class_alias('Collective\Html\FormFacade', 'Form');
-
-class_alias('Laravel\Socialite\Facades\Socialite', 'Socialite')
 
 /*
 |--------------------------------------------------------------------------

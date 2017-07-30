@@ -17,7 +17,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'email', 'api_token', 'insurance_company', 'insurance_account_number'
+    ];
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+    ];
 
     protected $table = 'User';
 

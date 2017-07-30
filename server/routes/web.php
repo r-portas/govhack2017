@@ -15,29 +15,12 @@ $app->get('test', function(){
 	return view('login');
 });
 
-$s = 'social.';
-$app->get('/social/redirect/{provider}',   ['as' => $s . 'redirect',   'uses' => 'SocialController@getSocialRedirect']);
-$app->get('/social/handle/{provider}',     ['as' => $s . 'handle',     'uses' => 'SocialController@getSocialHandle']);
-
-//Sign up user
-$app->post('user/register', function(){
-	//
-});
-
-//Login up user
-$app->post('user/login', function(){
-	//
-});
-
-//Update user info
-$app->put('user/{id}', function($id){
-
-});
-
-//Retrieves user details
-$app->get('user/{id}', function($id){
-
-});
+$app->post('users/login', 'UserController@login');
+$app->post('users/register', 'UserController@register');
+$app->get('users/info', [
+	'middleware' => 'authToken',
+	'uses' => 'UserController@info'
+]);
 
 //Submit incident
 $app->post('incident', 'IncidentController@store');

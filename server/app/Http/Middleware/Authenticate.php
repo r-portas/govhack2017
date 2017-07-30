@@ -1,10 +1,7 @@
 <?php
-
 namespace App\Http\Middleware;
-
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
-
 class Authenticate
 {
     /**
@@ -13,7 +10,6 @@ class Authenticate
      * @var \Illuminate\Contracts\Auth\Factory
      */
     protected $auth;
-
     /**
      * Create a new middleware instance.
      *
@@ -24,31 +20,18 @@ class Authenticate
     {
         $this->auth = $auth;
     }
-
-        /**
+    /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param $role
+     * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, $guard = null)
     {
-        if(!$this->auth->check())
-        {
-            return redirect()->to('/login')
-                ->with('status', 'success')
-                ->with('message', 'Please login.');
-        }
-
-        if($role == 'all')
-        {
-            return $next($request);
-        }
-        if( $this->auth->guest() || !$this->auth->user()->hasRole($role))
-        {
-            abort(403);
+        if ($this->auth->guard($guard)->guest()) {
+            return response('Unauthorized.', 401);
         }
         return $next($request);
     }

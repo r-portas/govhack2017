@@ -1,33 +1,51 @@
 <?php
-
 namespace App\Http\Controllers;
-
-use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Input;
-use App\Http\Controllers\Controller;
-use App\Models\User;
-
+use Illuminate\Http\Request;
+use App\User;
+use Auth;
 class UserController extends Controller
 {
-	public function get($id){
-		$user = User::find($id);
-		return $user;
-	}
+    private $salt;
+    public function __construct()
+    {
+        $this->salt=env("SALT");
+    }
 
-	public function store(){
-		$user = User::create([
-			//
-		]);
+    public function login(Request $request){
+      if ($request->has('email') && $request->has('password')) {
+        $user = User:: where("email", "=", $request->input('email'))
+                      ->where("password", "=", sha1($this->salt.$request->input('password')))
+                      ->first();
+        if ($user) {
+          $token=str_random(60);
+          $user->api_token=$token;
+          $user->save();
+          return $user->api_token;
+        } else {
+          return "User doesn't exist";
+        }
+      } else {
+        return "Insufficient login credentials";
+      }
+    }
 
-		return $user;
-	}
+    public function register(Request $request){
+      if ($request->has('password') && $request->has('email')) {
+        $user = new User;
+        $user->password=sha1($this->salt.$request->input('password'));
+        $user->email=$request->input('email');
+        $user->api_token=str_random(60);
+        if($user->save()){
+          return "User registered!";
+        } else {
+          return "Too bad";
+        }
+      } else {
+        return "Insufficient login credentials";
+      }
+    }
 
-	public function update($id){
-		$user = User::find($id)->update([
-			//
-		]);
-
-		return ['status'=>'success'];
-	}
+    public function info(){
+      return Auth::user();
+    }
 }
