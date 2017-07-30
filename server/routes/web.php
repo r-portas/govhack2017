@@ -19,6 +19,10 @@ $app->get('/test', function(){
 	return view('login');
 });
 
+$s = 'social.';
+$app->get('/social/redirect/{provider}',   ['as' => $s . 'redirect',   'uses' => 'AuthController@getSocialRedirect']);
+$app->get('/social/handle/{provider}',     ['as' => $s . 'handle',     'uses' => 'AuthController@getSocialHandle']);
+
 //Sign up user
 $app->post('user/register', function(){
 	//
@@ -41,7 +45,7 @@ $app->get('user/{id}', function($id){
 
 //Submit incident
 $app->post('incident', function(){
-
+	
 });
 
 //Update incident photos

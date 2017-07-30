@@ -16,6 +16,8 @@ class CreateUser extends Migration
         Schema::create('User', function (Blueprint $table) {
             $table->increments('id');
             $table->string('email');
+            $table->string('insurance_company');
+            $table->integer('insurance_account_number');
             $table->timestamps();
         });
     }

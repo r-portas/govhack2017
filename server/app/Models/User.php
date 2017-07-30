@@ -17,16 +17,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email',
-    ];
+    protected $guarded = [];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-    ];
+    protected $table = 'User';
+
+    public function incidents(){
+        return $this->hasMany('App\Models\Incident', 'user_id');
+    }
 }

@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-use app/Models/IncidentPhoto;
+use App\Models\IncidentPhoto;
  
 use Request;
  
 class PhotoController extends BaseController
 {
-    public function savePhoto($incidentID){
+    public function savePhotos($incidentID){
         $photo = Request::file('photo');
         $photoName = $incidentID.'_'.$photo->getClientOriginalName();
         IncidentPhoto::create([
