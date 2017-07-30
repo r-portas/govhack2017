@@ -4,6 +4,10 @@ import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import SwipeableViews from 'react-swipeable-views';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { Link } from 'react-router-dom';
+import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
+import {fullWhite} from 'material-ui/styles/colors';
+import * as $ from 'jquery';
 
 const styles = {
     headline: {
@@ -17,12 +21,59 @@ const styles = {
     }
 };
 
-export default class TabsExampleSwipeable extends Component {
+const style = {
+  margin: 12
+};
+
+class Injuries extends Component {
+    render() {
+        return <div className="help-card"> 
+            <Card className="help-card-container">
+                <CardText>  
+                     <h2 className="help-h2"> Is anyone injured? </h2> 
+                </CardText>
+
+                <CardActions className="help-card-actions">
+                    <RaisedButton primary={true} href="tel:000" label="Yes"/>
+                    <RaisedButton primary={true} label="No"/>
+                </CardActions>
+            </Card>
+            <div className="footer">
+                <RaisedButton
+                    icon={<ArrowBack />}
+                    className="btn-footer"
+                    style={style}
+                    primary={true}
+                    label="Go Back"
+                    containerElement={<Link to="/" />}
+                />
+             </div>
+        </ div>;
+    }
+}
+
+class Drivers extends Component {
+    
+}
+
+class Witness extends Component {
+    
+}
+
+class Evidence extends Component {
+    
+}
+
+export default class Form extends Component {
     constructor(props) {
         super(props);
         this.state = {
             slideIndex: 0,
         };
+    }
+
+    componentDidMount() {
+        $(window).resize();
     }
 
     handleChange = (value) => {
@@ -41,28 +92,15 @@ export default class TabsExampleSwipeable extends Component {
                 <Tab label="Tab Two" value={1} />
                 <Tab label="Tab Three" value={2} />
             </Tabs>
-            <SwipeableViews
+            <SwipeableViews id="help-form-body"
             index={this.state.slideIndex}
             onChangeIndex={this.handleChange}
             >
                 <div>
-                    <h2 style={styles.headline}>Tabs with slide effect</h2>
-                Swipe to see the next slide.<br />
+                    <Injuries />
                 </div>
                 <div style={styles.slide}>
-                    <Card>
-                        <CardHeader
-                            title="Injuries"
-                        />
-
-                        <CardText>
-                            Is anyone injured?
-                        </CardText>
-
-                        <CardActions>
-                            <RaisedButton primary={true} label="Next"/>
-                        </CardActions>
-                    </Card>
+                    
                 </div>
                 <div style={styles.slide}>
                     slide n°3

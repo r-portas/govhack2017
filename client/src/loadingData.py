@@ -3,6 +3,7 @@ import json
 import requests
 import numpy as np
 from sklearn import tree
+import datetime
 
 class DataType(object):
     def __init__(self):
@@ -76,11 +77,13 @@ class DataType(object):
         
         param: atmos weather condition        
         return:
-            0 if Clear
-            1 if Raining
+            0 if Daylight
+            1 if Dawn/Dusk
+            2 if Darkness - Lighted
+            3 if Darkness - Unlighted
 
         precondition:
-        * must be "Clear" or "Raining"
+        * must be "Daylight", "Dawn/Dusk" or "Darkness - Lighted" or "Darkness - Unlighted"
         """
         if condition == "Daylight":
             return 0
@@ -126,7 +129,10 @@ class DataType(object):
         speed = speed.split(' ')
         return int(speed[-2])
 
-class CrashLocations(DataType):      
+class CrashLocations(DataType):
+    def __init__(self):
+        super().__init__()
+        
     def process_file(self):
         """converts csv file to a list of lists.
         Each line is a single crash incident.
@@ -140,7 +146,7 @@ class CrashLocations(DataType):
         params: N/A
         returns: N/A
         """
-        file = open("locations.csv", 'r')
+        file = open("rawlocations.csv", 'r')
         start = True
         for line in file:
             #to skip first line
@@ -155,10 +161,6 @@ class CrashLocations(DataType):
                 continue
             if line[11] == "":
                 line[11] = None
-
-            #weather condition (dry - 0/wet - 1)
-            line[30] = line[30].split(' - ')
-            line[30] = self.convertRoadWeather(line[30][1])
 
             #Storing data for line
             list_line = [float(line[8]),
@@ -185,20 +187,33 @@ class InputCrashLocation(DataType):
     def __init__(self):
         self._total_info =[]
 
-        self.addData((-27.47, 153.03))
+        self.addData(-27.47, 153.03)
 
-    def addData(self, position):
-        lat, lon = position
+
+    def addData(self, lat, lon):
         response = requests.get("http://api.openweathermap.org/data/2.5/weather?lat="+str(lat)+"&lon="+str(lon)+"&appid=8617122af42ff01a0f0a2bab082b3e2f")
         data = response.json()
 
-        inputData = [(data['coord']['lon'], data['coord']['lat']), #Postion
+        inputData = [lat,
+                     lon,
                      self.convertAtmosWeather(data['weather'][0]['main']),#clear/raining
-                     ]
+                     self.convertTimeToDawnDusk(data['sys']['sunrise'],data['sys']['sunset'])]
 
-        print(inputData)
+        self._total_info.append(inputData)
 
-        print(data)     
+        print(data)  
+
+    def convertTimeToDawnDusk(self,unixTimeSunrise, unixTimeSunset):
+        """ determine the level of light from time"""
+        sunrise = datetime.datetime.fromtimestamp(unixTimeSunrise)
+        sunset = datetime.datetime.fromtimestamp(unixTimeSunset)
+        current = datetime.datetime.now()
+
+        if abs(sunrise.hour - current.hour) <= 1 or abs(sunset.hour - current.hour) <= 1:
+            return 1
+        elif current.time() >= sunset.time() or current.time() <= sunrise.time():
+            return 2
+        return 0 
 
 def main():
     """ VERSION WITH LONG/LAT AND WEATHER CONDITIONS
@@ -247,8 +262,7 @@ def main():
                                 feature_names=featureNames,
                                 class_names=classNames,
                                 filled=True, rounded=True,
-                                special_characters=True)
-
+                                special_characters=True)     
     
 if __name__ == "__main__":
     main()

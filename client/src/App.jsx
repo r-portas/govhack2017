@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import * as $ from 'jquery';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {
@@ -9,6 +10,7 @@ import {
 import Header from './components/Header';
 import Map from './pages/Map';
 import Help from './pages/Help';
+import UserAccount from './pages/UserAccount';
 
 const muiTheme = getMuiTheme({
     palette: {
@@ -17,6 +19,18 @@ const muiTheme = getMuiTheme({
 });
 
 class App extends Component {
+
+    componentDidMount() {
+        window.$ = $;
+        // TODO
+        // bad Glen!!!
+        $(window).on('resize', () => {
+            const height = $(window).height() - $('#app-header').height();
+            $('.help-card').height(height);
+        });
+
+        $(window).resize();
+    }
 
     render() {
         return (
@@ -27,6 +41,7 @@ class App extends Component {
 
                         <Route exact path="/" component={Map} />
                         <Route path="/help" component={Help} />
+                        <Route path="/account" component={UserAccount} />
                         
                     </div>
                 </MuiThemeProvider>
