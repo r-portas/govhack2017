@@ -11,6 +11,6 @@ class IncidentVehicle extends Model
     protected $table = 'IncidentVehicle';
 
     public function incident(){
-    	return $this->belongsTo('App\Models\Incident', 'incident_id');
+    	return $this->belongsTo('App\Incident', 'incident_id');
     }
 }

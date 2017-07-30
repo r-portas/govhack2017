@@ -11,6 +11,6 @@ class IncidentWitness extends Model
     protected $table = 'IncidentWitness';
 
     public function incident(){
-    	return $this->belongsTo('App\Models\Incident', 'incident_id');
+    	return $this->belongsTo('App\Incident', 'incident_id');
     }
 }

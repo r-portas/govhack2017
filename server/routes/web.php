@@ -11,14 +11,6 @@
 |
 */
 
-$app->get('/', function () use ($app) {
-    return DB::select("SELECT * FROM test");
-});
-
-$app->get('/test', function(){
-	return view('login');
-});
-
 $s = 'social.';
 $app->get('/social/redirect/{provider}',   ['as' => $s . 'redirect',   'uses' => 'AuthController@getSocialRedirect']);
 $app->get('/social/handle/{provider}',     ['as' => $s . 'handle',     'uses' => 'AuthController@getSocialHandle']);
@@ -44,23 +36,21 @@ $app->get('user/{id}', function($id){
 });
 
 //Submit incident
-$app->post('incident', function(){
-	
-});
+$app->post('incident', 'IncidentController@store');
+
+//get incident photos
+$app->get('incident/photos/{id}', 'IncidentController@getPhotos');
 
 //Update incident photos
-$app->put('incident/{id}/photos', function($id){
+$app->put('incident/photos/{id}', 'IncidentController@updatePhotos');
 
-});
+//View incident photo
+$app->put('photo/{name}', 'IncidentController@viewPhoto');
 
 //Retrieves incident details
-$app->get('incident', function(){
-
-});
+$app->get('incident/{id}', 'IncidentController@get');
 
 //mails incident details
-$app->put('incident/{id}/mail', function($id){
-
-});
+$app->put('incident/{id}/mail/{email}', 'IncidentController@mail');
 
 

@@ -6,28 +6,62 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use App\Http\Controllers\Controller;
-use App\Models\Incident;
-use App\Models\IncidentPhoto;
+use App\Incident;
+use App\IncidentPhoto;
+use App\IncidentVehicle;
+use App\IncidentWitness;
 
 class IncidentController extends Controller
 {
 	public function store(Request $request){
+		//user id somehow
+		$userID = 1;
+		$incident = Incident::create([
+			'user_id'=>$userID,
+			'description'=>$request->description,
+			'location'=>$location,
+			'damage'=>$damage
+		]);
 
+		$this->savePhotos($request->photos, $incident->id);
+
+		foreach($request->vehicles as $vehicle){
+			IncidentVehicle::create([
+				'incident_id'=>$incident->id,
+				'owned_by_reporter'=>$vehicle->owned_by_reporter,
+				'registration'=>$vehicle->registration,
+				'licence_plate'=>$vehicle->licence_plate,
+				'model'=>$vehicle->model
+			]);
+		}
+
+		foreach($request->witnesses as $witness){
+			IncidentWitness::create([
+				'incident_id'=>$incident->id,
+				'first_name'=>$witness->first_name,
+				'last_name'=>$witness->last_name,
+				'phone'=>$witness->phone,
+				'relation_to_event'=>$witness->relation_to_event
+			]);
+		}
+
+		return response()->json('success');
 	}
 
 	public function get($id){
-		$incident = Incident::find($id)
-			->with('photos')
-			->with('vehicles')
-			->with('witnesses');
-
-		$incident->photos = $this->photosToLinks($incident->photos);
+		$incident = Incident::with([
+				'photos',
+				'vehicles',
+				'witnesses'
+			])->find($id);
 
 		if($incident){
+			$incident->photos = $this->photosToLinks($incident->photos);
+
 			return response()->json($incident);
 		}
 		else{
-			return response()->toJson([
+			return response()->json([
 		        'message' => 'Record not found',
 		    ], 404);
 		}
@@ -36,7 +70,7 @@ class IncidentController extends Controller
 	}
 
 	public function getPhotos($id){
-        $photoModels = IncidentPhoto::where('incident_id', $incidentID)->get();
+        $photoModels = IncidentPhoto::where('incident_id', $id)->get();
         return response()->json($this->photosToLinks($photoModels));
 	}
 
@@ -52,7 +86,7 @@ class IncidentController extends Controller
         return response()->json('success');
 	}
 
-	public function mailIncident($id){
+	public function mail($id, $email){
 		//To do
 	}
 
