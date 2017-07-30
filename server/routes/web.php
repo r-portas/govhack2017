@@ -11,9 +11,13 @@
 |
 */
 
+$app->get('test', function(){
+	return view('login');
+});
+
 $s = 'social.';
-$app->get('/social/redirect/{provider}',   ['as' => $s . 'redirect',   'uses' => 'AuthController@getSocialRedirect']);
-$app->get('/social/handle/{provider}',     ['as' => $s . 'handle',     'uses' => 'AuthController@getSocialHandle']);
+$app->get('/social/redirect/{provider}',   ['as' => $s . 'redirect',   'uses' => 'SocialController@getSocialRedirect']);
+$app->get('/social/handle/{provider}',     ['as' => $s . 'handle',     'uses' => 'SocialController@getSocialHandle']);
 
 //Sign up user
 $app->post('user/register', function(){

@@ -83,10 +83,13 @@ $app->singleton(
 // $app->register(App\Providers\EventServiceProvider::class);
 
 $app->register('Collective\Html\HtmlServiceProvider');
+$app->register('Laravel\Socialite\SocialiteServiceProvider')
 
 class_alias('Collective\Html\HtmlFacade', 'Html');
 
 class_alias('Collective\Html\FormFacade', 'Form');
+
+class_alias('Laravel\Socialite\Facades\Socialite', 'Socialite')
 
 /*
 |--------------------------------------------------------------------------
@@ -102,5 +105,27 @@ class_alias('Collective\Html\FormFacade', 'Form');
 $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
     require __DIR__.'/../routes/web.php';
 });
+
+config([
+	'services' => [
+
+	    'google' => [
+	        'client_id'     => env('GOOGLE_ID'),
+	        'client_secret' => env('GOOGLE_SECRET'),
+	        'redirect'      => env('GOOGLE_REDIRECT')
+	    ]
+	],
+	'filesystems' =>[
+		'default' => 'local',
+ 
+	    'disks' => [
+	 
+	        'local' => [
+	            'driver' => 'local',
+	            'root' => storage_path('app'),
+	        ]
+	    ]
+	]
+]);
 
 return $app;

@@ -31,7 +31,10 @@ class IncidentController extends Controller
 				'owned_by_reporter'=>$vehicle->owned_by_reporter,
 				'registration'=>$vehicle->registration,
 				'licence_plate'=>$vehicle->licence_plate,
-				'model'=>$vehicle->model
+				'model'=>$vehicle->model,
+				'first_name'=>$vehicle->first_name,
+				'last_name'=>$vehicle->last_name,
+				'phone'=>$vehicle->phone
 			]);
 		}
 
@@ -50,10 +53,10 @@ class IncidentController extends Controller
 
 	public function get($id){
 		$incident = Incident::with([
-				'photos',
-				'vehicles',
-				'witnesses'
-			])->find($id);
+			'photos',
+			'vehicles',
+			'witnesses'
+		])->find($id);
 
 		if($incident){
 			$incident->photos = $this->photosToLinks($incident->photos);

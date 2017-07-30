@@ -19,9 +19,7 @@ class SocialController extends Controller
         $providerKey = Config::get('services.' . $provider);
 
         if (empty($providerKey)) {
-
-            return view('pages.status')
-                ->with('error','No such provider');
+            return response()->json(['message'=>'No such provider']);
 
         }
 
@@ -34,7 +32,7 @@ class SocialController extends Controller
 
         if (Input::get('denied') != '') {
 
-            return redirect()->to('/login')
+            return redirect()->to('/test')
                 ->with('status', 'danger')
                 ->with('message', 'You did not share your profile data with our social app.');
 
@@ -105,20 +103,6 @@ class SocialController extends Controller
         }
 
         auth()->login($socialUser, true);
-
-        if ( auth()->user()->hasRole('user')) {
-
-            return redirect()->route('user.home');
-
-        }
-
-        if ( auth()->user()->hasRole('administrator')) {
-
-            return redirect()->route('admin.home');
-
-        }
-
-        return abort(500, 'User has no Role assigned, role is obligatory! You did not seed the database with the roles.');
 
     }
 }
