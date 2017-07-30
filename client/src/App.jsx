@@ -45,7 +45,7 @@ class App extends Component {
                         <Route exact path="/" component={Map} />
                         <Route path="/help" component={Help} />
                         <Route path="/account" component={UserAccount} />
-                        <Route path="/aboutmap" component={AboutMap} />
+                        <Route path="/about" component={AboutMap} />
                         
                     </div>
                 </MuiThemeProvider>

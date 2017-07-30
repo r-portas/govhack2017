@@ -95,6 +95,7 @@ class Map extends Component {
                         data={data || []}
                     />
                 </MapGL>
+
                 <Footer />
             </div>
         );
